@@ -10,7 +10,7 @@ import { MethodologyFunnel, InstrumentComparison } from './components/Diagrams';
 import { 
   ArrowDown, Menu, X, BookOpen, HeartPulse, Scale, 
   FileText, Users, Activity, ChevronRight, AlertTriangle, 
-  Lightbulb, Share2, Printer, Check, Copy, ExternalLink 
+  Lightbulb, Share2, Printer, Check, Copy
 } from 'lucide-react';
 
 const Reference = ({ text, index }: { text: string, index: number }) => (
@@ -45,7 +45,6 @@ const App: React.FC = () => {
         console.error('Error sharing:', err);
       }
     } else {
-      // Fallback: Copy to clipboard
       navigator.clipboard.writeText(window.location.href);
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
@@ -75,12 +74,12 @@ const App: React.FC = () => {
   const tocItems = [
     { id: 'background', label: 'Background', sub: 'Introduction & Context', icon: Users },
     { id: 'methods', label: 'Methods', sub: 'Literature Search', icon: BookOpen },
-    { id: 'results', label: 'Results', sub: 'Tool Analysis', icon: Activity },
+    { id: 'results', label: 'Results', sub: 'Tool Comparison', icon: Activity },
     { id: 'equity', label: 'Discussion', sub: 'Conclusions & Future', icon: Scale },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 selection:bg-medical-teal selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-800 selection:bg-medical-teal selection:text-white font-sans">
       
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 no-print ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'}`}>
@@ -135,11 +134,11 @@ const App: React.FC = () => {
             <a href="#methods" onClick={scrollToSection('methods')} className="hover:text-medical-teal transition-colors cursor-pointer uppercase">Methods</a>
             <a href="#results" onClick={scrollToSection('results')} className="hover:text-medical-teal transition-colors cursor-pointer uppercase">Results</a>
             <a href="#equity" onClick={scrollToSection('equity')} className="hover:text-medical-teal transition-colors cursor-pointer uppercase">Discussion</a>
-            <div className="flex flex-col gap-4 mt-8 pt-8 border-t border-slate-100 w-48">
-                <button onClick={handleShare} className="flex items-center justify-center gap-3 py-3 bg-slate-50 rounded-xl text-base font-sans font-medium">
+            <div className="flex flex-col gap-4 mt-8 pt-8 border-t border-slate-100 w-48 font-sans">
+                <button onClick={handleShare} className="flex items-center justify-center gap-3 py-3 bg-slate-50 rounded-xl text-base font-medium">
                     <Share2 size={20} /> Share Link
                 </button>
-                <button onClick={handlePrint} className="flex items-center justify-center gap-3 py-3 bg-slate-50 rounded-xl text-base font-sans font-medium">
+                <button onClick={handlePrint} className="flex items-center justify-center gap-3 py-3 bg-slate-50 rounded-xl text-base font-medium">
                     <Printer size={20} /> Save as PDF
                 </button>
             </div>
@@ -150,7 +149,7 @@ const App: React.FC = () => {
       )}
 
       {/* Hero Section */}
-      <header className="relative h-screen flex items-center justify-center overflow-hidden">
+      <header className="relative min-h-screen flex items-center justify-center overflow-hidden py-24 md:py-0">
         <div className="no-print">
             <AbstractBackground />
         </div>
@@ -165,12 +164,12 @@ const App: React.FC = () => {
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-medium leading-tight mb-8 text-slate-900 drop-shadow-sm">
             Validated Instruments for Substance Use Disorders in <span className="text-medical-teal italic">Homeless Healthcare</span>
           </h1>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 font-light leading-relaxed mb-12">
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 font-light leading-relaxed mb-10">
             A comparative review identifying appropriate screening and assessment tools for outreach-based settings to facilitate rapid linkage to treatment.
           </p>
           
           <div className="flex flex-col items-center gap-8 no-print">
-             <a href="#toc" onClick={scrollToSection('toc')} className="group flex flex-col items-center gap-2 text-sm font-medium text-slate-400 hover:text-slate-900 transition-colors cursor-pointer">
+             <a href="#toc" onClick={scrollToSection('toc')} className="group flex flex-col items-center gap-2 text-sm font-medium text-slate-400 hover:text-slate-900 transition-colors cursor-pointer uppercase tracking-widest">
                 <span>START PRESENTATION</span>
                 <span className="p-2 border border-slate-300 rounded-full group-hover:border-slate-900 transition-colors bg-white/50">
                     <ArrowDown size={16} />
@@ -231,7 +230,7 @@ const App: React.FC = () => {
               <div className="w-16 h-1 bg-medical-teal mb-6"></div>
               <div className="p-6 bg-slate-50 rounded-xl border border-slate-100">
                 <Users className="text-medical-teal mb-4" />
-                <p className="text-sm text-slate-600 italic">
+                <p className="text-sm text-slate-600 italic leading-relaxed">
                   "Mobile clinics, shelters, and other nontraditional care environments serve as critical first points of contact."
                 </p>
               </div>
@@ -284,23 +283,21 @@ const App: React.FC = () => {
             </div>
         </section>
 
-        {/* Results */}
-        <section id="results" className="py-24 bg-slate-900 text-slate-100 relative overflow-hidden">
-             <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none no-print">
-                <div className="w-96 h-96 rounded-full bg-medical-teal blur-[100px] absolute top-[-100px] left-[-100px]"></div>
-                <div className="w-96 h-96 rounded-full bg-blue-600 blur-[100px] absolute bottom-[-100px] right-[-100px]"></div>
-            </div>
-
-            <div className="container mx-auto px-6 relative z-10">
+        {/* Results - Light Themed & Streamlined */}
+        <section id="results" className="py-24 bg-white border-t border-slate-200">
+            <div className="container mx-auto px-6">
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <div className="inline-block mb-3 text-xs font-bold tracking-widest text-medical-teal uppercase">03 Findings</div>
-                    <h2 className="font-serif text-4xl md:text-5xl mb-6 text-white">Evidence Synthesis</h2>
-                    <p className="text-lg text-slate-400">
-                        Our review identified 12 key entries including primary psychometric validation studies, reviews, and commentaries. While several tools show high reliability, the feasibility of implementation in rapid-triage HCH settings remains a critical barrier.
+                    <h2 className="font-serif text-4xl md:text-5xl mb-6 text-slate-900">Instrument Synthesis</h2>
+                    <p className="text-lg text-slate-600">
+                        Detailed classification of validated tools for HCH environments, distinguishing between rapid screening and in-depth clinical assessment.
                     </p>
                 </div>
                 
-                <InstrumentComparison />
+                {/* Comparative Analysis Section */}
+                <div className="pt-4">
+                  <InstrumentComparison />
+                </div>
                 
             </div>
         </section>
@@ -313,18 +310,17 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
-                    {/* Column 1: The Context & The Gap */}
                     <div>
                         <h3 className="font-serif text-3xl mb-6 text-slate-900">Prevalence vs. Stigma</h3>
                         <p className="text-slate-600 mb-6 leading-relaxed">
-                            Substance use disorder is a leading cause of death for our patients, often manifesting from a lifetime of poverty, exclusion, and trauma. However, <strong className="text-slate-900">homelessness is a problem of affordable housing and is not synonymous with addiction.</strong> Approximately 60% of people experiencing homelessness do not meet criteria for AUD, yet prevalence remains significantly higher than the general population (84% of chronically homeless men in some studies).
+                            Substance use disorder is a leading cause of death for our patients, often manifesting from a lifetime of poverty, exclusion, and trauma. However, <strong className="text-slate-900 font-bold italic">homelessness is a problem of affordable housing and is not synonymous with addiction.</strong> Approximately 60% of people experiencing homelessness do not meet criteria for AUD, yet prevalence remains significantly higher than the general population.
                         </p>
                         
                         <div className="bg-yellow-50 p-6 rounded-xl border border-yellow-100 mb-8">
                             <div className="flex items-center gap-2 mb-3 text-yellow-800 font-bold uppercase text-xs tracking-wide">
                                 <AlertTriangle size={16}/> The Validation Gap
                             </div>
-                            <p className="text-sm text-yellow-900/80">
+                            <p className="text-sm text-yellow-900/80 leading-relaxed">
                                 While USPSTF and SAMHSA recommend screening, widespread tools (ASI, AUDIT) lack robust validation in HCH settings. Questions regarding hygiene, food storage, or sleep quality often fail to account for the reality of homelessness, skewing validity (Gordon et al.).
                             </p>
                         </div>
@@ -333,12 +329,8 @@ const App: React.FC = () => {
                         <p className="text-slate-600 mb-6 leading-relaxed">
                             Reality confronts us with a difficult trade-off in street outreach: <strong className="text-slate-900">Rapport vs. Paperwork</strong>. Formal screening can interrupt the delicate trust-building process.
                         </p>
-                        <p className="text-slate-600 mb-6 leading-relaxed">
-                             While expert clinicians can diagnose via unstructured interview, volunteer or student-run teams benefit from protocolized approaches. However, self-reporting is often under-reported due to fear of losing services or shelter access.
-                        </p>
                     </div>
 
-                    {/* Column 2: Strategies & Future */}
                     <div>
                         <h3 className="font-serif text-3xl mb-6 text-slate-900">Practical Strategies</h3>
                         <div className="space-y-6 mb-8">
@@ -346,7 +338,7 @@ const App: React.FC = () => {
                                 <h4 className="font-bold text-slate-800 mb-2 flex items-center gap-2">
                                     <Activity size={16} className="text-medical-teal"/> Single-Item Screeners
                                 </h4>
-                                <p className="text-slate-600 text-sm">
+                                <p className="text-slate-600 text-sm leading-relaxed">
                                     The USPSTF recommends single-question screens for alcohol/drugs. They offer a fair trade-off between ease of use and accuracy (Sensitivity 82-87%), making them potentially suitable for high-turnover street clinics despite the lack of specific HCH validation.
                                 </p>
                             </div>
@@ -354,7 +346,7 @@ const App: React.FC = () => {
                                 <h4 className="font-bold text-slate-800 mb-2 flex items-center gap-2">
                                     <Scale size={16} className="text-medical-teal"/> Adapting SBIRT
                                 </h4>
-                                <p className="text-slate-600 text-sm">
+                                <p className="text-slate-600 text-sm leading-relaxed">
                                     SBIRT is cost-effective but relies on stable settings. For street medicine, it must be adapted to include immediate physician assessment for on-site treatment initiation and low-barrier harm reduction distribution.
                                 </p>
                             </div>
@@ -364,10 +356,10 @@ const App: React.FC = () => {
                             <h4 className="font-serif text-xl text-slate-900 mb-4 flex items-center gap-2">
                                 <Lightbulb size={20} className="text-medical-teal"/> Future Directions
                             </h4>
-                            <p className="text-slate-600 mb-4 leading-relaxed">
+                            <p className="text-slate-600 mb-4 text-sm leading-relaxed">
                                 We need instruments that are respectful, brief, and accessible to those with neurocognitive impairments. 
                             </p>
-                            <p className="text-slate-700 font-medium italic">
+                            <p className="text-slate-700 font-medium italic text-sm leading-relaxed">
                                 "Employing a community-engaged research approach to involve patients in the selection and adaptation of screening tools can ensure that the instruments are acceptable to those they are intended to serve."
                             </p>
                         </div>
@@ -395,7 +387,21 @@ const App: React.FC = () => {
            </div>
         </section>
 
-        {/* Share Section - Added for direct user action at the end */}
+        {/* Authorship Section */}
+        <section id="authorship" className="py-20 bg-white border-t border-slate-200">
+            <div className="container mx-auto px-6 max-w-4xl text-center">
+                <h3 className="text-xs font-bold tracking-[0.4em] text-slate-400 uppercase mb-12">Research Authorship</h3>
+                <div className="flex flex-col gap-6 font-serif text-2xl md:text-3xl text-slate-800 leading-tight">
+                    <p className="font-bold text-slate-900">Dan Bergholz, MD</p>
+                    <p>Ashwin Subramaniam</p>
+                    <p>Stephanie Young, PsyD</p>
+                    <p>Edward Suarez, PsyD</p>
+                    <p>Kenneth Pettersen, MD</p>
+                </div>
+            </div>
+        </section>
+
+        {/* Share Section */}
         <section className="py-20 bg-medical-teal text-white text-center no-print">
             <div className="container mx-auto px-6 max-w-2xl">
                 <Share2 size={48} className="mx-auto mb-6 opacity-80" />
@@ -421,14 +427,14 @@ const App: React.FC = () => {
       </main>
 
       <footer className="bg-slate-900 text-slate-400 py-16">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="text-center md:text-left">
+        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
+            <div>
                 <div className="text-white font-serif font-bold text-2xl mb-2">Comparative Review</div>
                 <p className="text-sm">Substance Use Disorders in Homeless Healthcare Settings</p>
             </div>
-            <div className="text-center md:text-right text-xs">
+            <div className="text-xs opacity-70">
               <p>Presentation Date: April 25-26, 2025</p>
-              <p className="mt-1">No Financial Relationships to Disclose</p>
+              <p className="mt-1 italic">No Financial Relationships to Disclose</p>
               <div className="mt-4 flex justify-center md:justify-end gap-4 no-print">
                 <button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="hover:text-white transition-colors uppercase tracking-widest font-bold">Back to Top</button>
               </div>

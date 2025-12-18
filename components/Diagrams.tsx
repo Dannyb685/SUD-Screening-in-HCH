@@ -6,7 +6,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Filter, CheckCircle, XCircle, Clock, Activity, Database, Search, Beaker } from 'lucide-react';
+import { Filter, CheckCircle, XCircle, Clock, Activity, Database, Search, Beaker, LayoutGrid, ClipboardCheck, Check } from 'lucide-react';
 
 // --- METHODOLOGY FUNNEL ---
 export const MethodologyFunnel: React.FC = () => {
@@ -42,7 +42,7 @@ export const MethodologyFunnel: React.FC = () => {
              </div>
         </div>
 
-        {/* Stage 2: Screening (Trapezoid shape simulation) */}
+        {/* Stage 2: Screening */}
         <div className="w-[70%] relative group">
           <div className="h-20 bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-300 flex flex-col items-center justify-center relative z-10 shadow-sm transition-all group-hover:shadow-md clip-path-trapezoid rounded-md">
             <span className="text-sm font-medium text-slate-600">Screening & Exclusion</span>
@@ -74,11 +74,6 @@ export const MethodologyFunnel: React.FC = () => {
             <CheckCircle className="absolute -top-3 -right-3 text-white bg-teal-500 rounded-full p-0.5 border-2 border-white" size={24} />
           </motion.div>
         </div>
-
-        {/* Background Graphic for Funnel Effect */}
-        <svg className="absolute top-0 left-0 w-full h-full -z-10 opacity-10 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path d="M0,0 L100,0 L70,50 L85,100 L15,100 L30,50 Z" fill="currentColor" className="text-slate-400" />
-        </svg>
       </div>
       
       <div className="mt-8 grid grid-cols-2 gap-4 w-full text-center">
@@ -96,99 +91,125 @@ export const MethodologyFunnel: React.FC = () => {
 };
 
 // --- INSTRUMENT COMPARISON ---
-export const InstrumentComparison: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'AUDIT' | 'ADS' | 'SIP' | 'ASI' | 'TLFB'>('AUDIT');
+type ToolId = 'AUDIT' | 'DAST' | 'ADS' | 'SIP' | 'ASI' | 'TLFB';
 
-  const content = {
+export const InstrumentComparison: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<ToolId>('AUDIT');
+
+  const content: Record<ToolId, any> = {
       AUDIT: {
-          title: "AUDIT / DAST",
-          fullName: "AUDIT & DAST-20",
-          type: "Screening (Pike, 2014)",
-          substance: "Alcohol (AUDIT) & Polysubstance/Illicit Drugs (DAST)",
-          time: "Brief (2-5 mins)",
+          title: "AUDIT",
+          category: "Screening",
+          fullName: "Alcohol Use Disorders Identification Test",
+          type: "Primary Screen",
+          substance: "Alcohol Use",
+          time: "2-5 mins",
           pros: [
-              "Reliability: Excellent internal consistency (α=0.93 for AUDIT, α=0.86 for DAST).",
-              "Performance: Mean score 14.73 for AUDIT (Medium risk); 10.1 for DAST (Substantial risk).",
-              "Validity: Correlated w/ Legal History & BDI-II (r=.25)."
+              "Exceptional reliability (α=0.93) in HCH samples.",
+              "Stable test-retest reliability among transient males.",
+              "Validated for rapid clinical triage."
           ],
           cons: [
-              "Generalizability: Validated only in male, faith-based rehab settings (Pike, 2014).",
-              "Constraint: Validated in a sober/housed cohort during rehab.",
-              "Independence: Weak correlation between AUDIT & DAST (r=.19) suggests they measure distinct risks."
+              "Scores often skewed high in homeless populations.",
+              "Requires immediate physician backup for high scores.",
+              "Cutoffs may need gender-specific adjustment."
           ],
-          verdict: "Psychometrically superior to other screens but lacks evidence in street-based HCH outreach."
+          verdict: "Gold standard primary screen for alcohol use in high-volume triage settings."
+      },
+      DAST: {
+          title: "DAST",
+          category: "Screening",
+          fullName: "Drug Abuse Screening Test",
+          type: "Primary Screen",
+          substance: "Illicit Drug Use",
+          time: "2-5 mins",
+          pros: [
+              "Effective in identifying substantial drug risk levels.",
+              "Maintains strong reliability (α=0.86) in PEH cohorts.",
+              "Brief enough for street outreach use."
+          ],
+          cons: [
+              "Does not correlate with alcohol risk; must be co-administered.",
+              "Relies on honest disclosure in non-punitive environments.",
+              "Focuses on presence of use rather than social harm."
+          ],
+          verdict: "Essential companion to AUDIT for capturing full polysubstance risk profiles."
       },
       ADS: {
           title: "ADS",
+          category: "Assessment",
           fullName: "Alcohol Dependence Scale",
-          type: "Screening (Chantarujikapong et al., 1997)",
-          substance: "Alcohol Dependence Severity",
+          type: "Severity Assessment",
+          substance: "Alcohol Dependence",
           time: "10-15 mins",
           pros: [
-              "Reliability: Excellent internal consistency (α=0.99) in homeless women.",
-              "Sensitivity: Exceptional range (0.72–0.96) for identifying AUD.",
-              "Specificity: Strong performance (0.70–0.88) with adjusted cutoffs (3-8)."
+              "Exceptional reliability (α=0.99) in homeless women.",
+              "High sensitivity (0.72–0.96) for identifying AUD.",
+              "Excellent for measuring depth of dependence."
           ],
           cons: [
-              "Population Bias: Primary validation limited to homeless women in St. Louis.",
-              "Adjustment: Requires lower cutoffs than general populations to maintain specificity.",
-              "Scope: Alcohol-specific; requires supplementation for polysubstance monitoring."
+              "Primary validation limited to female samples in St. Louis.",
+              "Authors used it for screening, but it lacks specific psychometric validation for that purpose.",
+              "Doesn't capture consumption volume data."
           ],
-          verdict: "Highest sensitivity of the brief tools; best-in-class for alcohol-specific screening in women."
+          verdict: "ADS is primarily an assessment tool and validated as such. Although some authors have utilized it for screening, it hasn't been psychometrically validated for that purpose."
       },
       SIP: {
           title: "SIP-2R",
+          category: "Assessment",
           fullName: "Short Inventory of Problems",
-          type: "Assessment (Goldstein et al., 2023)",
+          type: "Harm Assessment",
           substance: "Alcohol-Related Harm",
-          time: "Brief (15 items)",
+          time: "5-8 mins",
           pros: [
-              "Reliability: Strong internal consistency (α=0.94) in homeless AUD samples.",
-              "Invariance: Partial scalar invariance across races (NAI, Black, White).",
-              "Utility: Validated specifically for cross-cultural harm assessment in Seattle."
+              "Strong internal consistency (α=0.94).",
+              "Valid across racial groups (NAI, Black, White).",
+              "Seattle-validated specifically for PEH."
           ],
           cons: [
-              "Demographics: Validation sample skewed heavily male (80%).",
-              "Focus: Measures harms/consequences, not diagnostic criteria or consumption volume.",
-              "Context: Best used for harm reduction monitoring rather than initial triage."
+              "Focuses on harms, not diagnostic criteria.",
+              "Heavily male-skewed validation data (80%).",
+              "Secondary to initial diagnostic triage."
           ],
-          verdict: "Gold standard for measuring health and social consequences across diverse racial groups."
+          verdict: "Optimal for cross-cultural harm assessment and longitudinal monitoring."
       },
       ASI: {
           title: "ASI",
+          category: "Assessment",
           fullName: "Addiction Severity Index",
-          type: "Assessment (Zanis et al., 1994)",
-          substance: "Multidimensional (Alcohol, Drugs, Med, Social)",
+          type: "Comprehensive Assessment",
+          substance: "Multidimensional Social/Legal",
           time: "45-60 mins",
           pros: [
-              "Domain Reliability: Medical (α=.93) and Alcohol (α=.87) domains are highly stable.",
-              "Performance: 80% sensitivity in detecting drug-positive urine cases via self-report.",
-              "Validity: Alcohol CS correlated significantly with ADS (r=.61)."
+              "Excellent medical (α=.93) and drug (α=.87) domains.",
+              "80% sensitivity for drug-positive urine verification.",
+              "Broad research standardization."
           ],
           cons: [
-              "Unstable Domains: Employment (α=.50) and Family (α=.52) fail psychometric standards.",
-              "Burden: 3-day training and long administration is infeasible for HCH workflow (Mäkelä, 2004).",
-              "Developer Consensus: McLellan et al. (2004) conceded validity limits in homeless cohorts."
+              "Social/Legal domains show poor reliability (α<.55).",
+              "Prohibitive administrative burden (60 mins).",
+              "Inconsistent results for family and legal history in PEH."
           ],
-          verdict: "Valid for medical/alcohol domains but fails psychometric standards for social/legal domains in PEH."
+          verdict: "Valid for medical and drug domains but inefficient for HCH street medicine."
       },
       TLFB: {
           title: "TLFB",
+          category: "Assessment",
           fullName: "Timeline Followback",
-          type: "Assessment (Sacks et al., 2003)",
-          substance: "Daily Consumption (Alcohol/Drugs)",
+          type: "Detailed Monitoring",
+          substance: "Daily Consumption Pattern",
           time: "10-30 mins",
           pros: [
-              "Reliability: Good/Excellent ICC (.72–.93) for retrospective recall.",
-              "Validation: Strong correlation (r=.68) between self-report and SCRAM monitoring (Rash et al., 2019).",
-              "Accuracy: 95-100% detection sensitivity for heavy drinking (>2 drinks)."
+              "Excellent ICC (.72–.93) for retrospective recall.",
+              "Highly accurate (95-100% sensitivity) for heavy use.",
+              "Matches objective monitoring (SCRAM) closely."
           ],
           cons: [
-              "Social Risk: High risk of underreporting if punitive sanctions (shelter loss) exist.",
-              "Recall Bias: 'Fluidity' of homeless life can impact recall stability (Joyner et al., 1996).",
-              "Workflow: Time-intensive calendar method clashes with crisis-driven street medicine."
+              "Prone to underreporting if services are contingent on sobriety.",
+              "Requires stable recall periods (impacted by trauma).",
+              "Highly time-intensive calendar method."
           ],
-          verdict: "Confirms that self-report is accurate in non-punitive settings; best for outcome monitoring."
+          verdict: "Superior for long-term treatment monitoring and objective consumption data."
       }
   };
 
@@ -196,74 +217,106 @@ export const InstrumentComparison: React.FC = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto">
-        {/* Tabs */}
-        <div className="flex justify-center gap-2 md:gap-4 mb-8 flex-wrap">
-            {(Object.keys(content) as Array<keyof typeof content>).map((key) => (
+        {/* Grouped Tabs Header */}
+        <div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-12">
+          {/* Screening Group */}
+          <div className="flex flex-col items-center">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+              <LayoutGrid size={12} /> Screening Tools
+            </span>
+            <div className="flex gap-2">
+              {['AUDIT', 'DAST'].map((key) => (
                 <button
                     key={key}
-                    onClick={() => setActiveTab(key)}
-                    className={`px-6 py-3 rounded-xl font-serif font-bold text-lg transition-all duration-300 border ${
+                    onClick={() => setActiveTab(key as ToolId)}
+                    className={`px-6 py-2 rounded-xl font-serif font-bold transition-all duration-300 border ${
                         activeTab === key 
-                        ? 'bg-medical-teal text-white border-medical-teal shadow-lg scale-105' 
-                        : 'bg-slate-800/50 text-slate-300 border-slate-700 hover:bg-slate-700 hover:border-slate-500'
+                        ? 'bg-medical-teal text-white border-medical-teal shadow-md' 
+                        : 'bg-white text-slate-500 border-slate-200 hover:border-medical-teal/30 hover:bg-slate-50'
                     }`}
                 >
-                    {content[key].title}
+                    {content[key as ToolId].title}
                 </button>
-            ))}
+              ))}
+            </div>
+          </div>
+
+          <div className="hidden md:block w-px h-12 bg-slate-200"></div>
+
+          {/* Assessment Group */}
+          <div className="flex flex-col items-center">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+              <ClipboardCheck size={12} /> Assessment Tools
+            </span>
+            <div className="flex gap-2 flex-wrap justify-center">
+              {['ADS', 'SIP', 'ASI', 'TLFB'].map((key) => (
+                <button
+                    key={key}
+                    onClick={() => setActiveTab(key as ToolId)}
+                    className={`px-6 py-2 rounded-xl font-serif font-bold transition-all duration-300 border ${
+                        activeTab === key 
+                        ? 'bg-medical-teal text-white border-medical-teal shadow-md' 
+                        : 'bg-white text-slate-500 border-slate-200 hover:border-medical-teal/30 hover:bg-slate-50'
+                    }`}
+                >
+                    {content[key as ToolId].title}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Content Card */}
+        {/* Content Card - Light Style */}
         <AnimatePresence mode="wait">
             <motion.div
                 key={activeTab}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white rounded-2xl p-6 md:p-10 shadow-2xl border border-slate-200 text-slate-800"
+                className="bg-slate-50 rounded-2xl p-6 md:p-10 border border-slate-100 shadow-sm"
             >
                 {/* Header */}
-                <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8 border-b border-slate-100 pb-6">
+                <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8 border-b border-slate-200 pb-6">
                     <div>
                         <h3 className="text-3xl font-serif font-bold text-slate-900 mb-2">{activeData.fullName}</h3>
                         <div className="flex flex-wrap items-center gap-4">
-                            <div className="flex items-center gap-2 text-medical-teal font-medium">
-                                <Activity size={18} /> {activeData.type}
+                            <div className="flex items-center gap-2 text-medical-teal font-medium text-sm">
+                                <Activity size={16} /> {activeData.type}
                             </div>
-                            <div className="flex items-center gap-2 text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full text-sm font-semibold border border-indigo-100">
-                                <Beaker size={14} /> {activeData.substance}
+                            <div className="flex items-center gap-2 text-indigo-600 bg-indigo-50 px-3 py-0.5 rounded-full text-[10px] font-bold border border-indigo-100 uppercase tracking-wider">
+                                <Beaker size={12} /> {activeData.substance}
                             </div>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2 bg-slate-100 px-4 py-2 rounded-lg text-slate-600 font-medium whitespace-nowrap mt-4 md:mt-0">
-                        <Clock size={18} /> {activeData.time}
+                    <div className="flex items-center gap-2 bg-white border border-slate-200 px-4 py-2 rounded-lg text-slate-500 text-xs font-bold whitespace-nowrap mt-4 md:mt-0 uppercase tracking-widest">
+                        <Clock size={16} className="text-slate-400" /> {activeData.time}
                     </div>
                 </div>
 
                 {/* Qualitative Data */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div className="bg-green-50/50 p-6 rounded-xl border border-green-100">
-                        <h4 className="flex items-center gap-2 font-bold text-green-800 mb-4 uppercase text-sm tracking-wider">
-                            <CheckCircle size={16} /> Psychometric Performance
+                    <div>
+                        <h4 className="flex items-center gap-2 font-bold text-slate-900 mb-4 uppercase text-[10px] tracking-widest">
+                            <CheckCircle size={14} className="text-medical-teal" /> Validation Performance
                         </h4>
-                        <ul className="space-y-3">
-                            {activeData.pros.map((pro, i) => (
-                                <li key={i} className="flex items-start gap-2 text-slate-700 leading-relaxed text-sm">
-                                    <span className="block w-1.5 h-1.5 bg-green-500 rounded-full mt-1.5 shrink-0"></span>
+                        <ul className="space-y-4">
+                            {activeData.pros.map((pro: string, i: number) => (
+                                <li key={i} className="flex items-start gap-3 text-slate-600 leading-relaxed text-sm">
+                                    <Check size={14} className="text-medical-teal mt-1 shrink-0" />
                                     {pro}
                                 </li>
                             ))}
                         </ul>
                     </div>
-                    <div className="bg-red-50/50 p-6 rounded-xl border border-red-100">
-                        <h4 className="flex items-center gap-2 font-bold text-red-800 mb-4 uppercase text-sm tracking-wider">
-                            <XCircle size={16} /> Limitations & HCH Evidence
+                    <div>
+                        <h4 className="flex items-center gap-2 font-bold text-slate-900 mb-4 uppercase text-[10px] tracking-widest">
+                            <XCircle size={14} className="text-amber-500" /> Key Limitations
                         </h4>
-                        <ul className="space-y-3">
-                            {activeData.cons.map((con, i) => (
-                                <li key={i} className="flex items-start gap-2 text-slate-700 leading-relaxed text-sm">
-                                    <span className="block w-1.5 h-1.5 bg-red-500 rounded-full mt-1.5 shrink-0"></span>
+                        <ul className="space-y-4">
+                            {activeData.cons.map((con: string, i: number) => (
+                                <li key={i} className="flex items-start gap-3 text-slate-600 leading-relaxed text-sm">
+                                    <span className="block w-1 h-1 bg-amber-500 rounded-full mt-2 shrink-0"></span>
                                     {con}
                                 </li>
                             ))}
@@ -271,16 +324,10 @@ export const InstrumentComparison: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-center">
-                    <div className={`px-6 py-3 rounded-lg text-center font-serif text-lg font-medium border ${
-                         activeTab === 'SIP' ? 'bg-green-50 border-green-200 text-green-800' :
-                         activeTab === 'TLFB' ? 'bg-yellow-50 border-yellow-200 text-yellow-800' :
-                         activeTab === 'AUDIT' ? 'bg-blue-50 border-blue-200 text-blue-800' :
-                         activeTab === 'ADS' ? 'bg-purple-50 border-purple-200 text-purple-800' :
-                         'bg-red-50 border-red-200 text-red-800'
-                    }`}>
-                        <span className="font-bold uppercase tracking-wider text-xs block mb-1 opacity-70">Review Conclusion for HCH</span>
-                        {activeData.verdict}
+                <div className="mt-10 pt-8 border-t border-slate-200 flex items-center justify-center">
+                    <div className="px-6 py-4 rounded-xl text-center font-serif text-slate-700 bg-white border border-slate-200 shadow-sm max-w-2xl">
+                        <span className="font-bold uppercase tracking-[0.2em] text-[10px] block mb-2 text-medical-teal">HCH Context Conclusion</span>
+                        <p className="text-base italic leading-relaxed">{activeData.verdict}</p>
                     </div>
                 </div>
             </motion.div>
