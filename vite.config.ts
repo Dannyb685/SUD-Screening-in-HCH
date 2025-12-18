@@ -12,8 +12,8 @@ export default defineConfig({
     cssCodeSplit: false,
     outDir: 'dist',
     rollupOptions: {
-      inlineDynamicImports: true,
       output: {
+        inlineDynamicImports: true,
         manualChunks: undefined,
       },
     },
